@@ -82,4 +82,13 @@ public class MainActivity extends AppCompatActivity {
     public void changeToolbarTitle(String title){
         toolbarTitle.setText(title);
     }
+
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+        }
+        else
+            finishAffinity();
+    }
 }

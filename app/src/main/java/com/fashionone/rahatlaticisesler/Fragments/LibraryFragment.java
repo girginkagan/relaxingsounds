@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,7 +15,9 @@ import android.view.ViewGroup;
 
 import com.fashionone.rahatlaticisesler.Activities.MainActivity;
 import com.fashionone.rahatlaticisesler.Adapters.LibraryCategoriesRecyclerViewAdapter;
+import com.fashionone.rahatlaticisesler.Interfaces.OnLibraryCategoryItemClick;
 import com.fashionone.rahatlaticisesler.R;
+import com.fashionone.rahatlaticisesler.SongCategory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,11 +25,9 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 
-
 public class LibraryFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
-
+    FragmentTransaction fragmentTransaction;
     public LibraryFragment() {
     }
 
@@ -35,6 +37,7 @@ public class LibraryFragment extends Fragment {
     }
 
     RecyclerView categoriesRecyclerView;
+    JSONArray jsonArray;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,12 +60,29 @@ public class LibraryFragment extends Fragment {
             }
         };
 
+        //recycler view item click listener
+        final OnLibraryCategoryItemClick clickListener = new OnLibraryCategoryItemClick() {
+            @Override
+            public void onItemClick(View v, int position) throws JSONException {
+                MainActivity activity = (MainActivity)getActivity();
+                activity.changeToolbarTitle(jsonArray.getJSONObject(position).getString("title"));
+                fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                //set id as argument for the next fragment
+                LibraryCategorySelectedFragment libraryCategorySelectedFragment = new LibraryCategorySelectedFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("id", jsonArray.getJSONObject(position).getString("id"));
+                libraryCategorySelectedFragment.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.rootFrame, libraryCategorySelectedFragment).addToBackStack(null).commit();
+            }
+        };
+
         //Get json response from file in assets folder
-        String response = LoadData("library_category_json.html");
+        String response = SongCategory.LoadCategories(getActivity());
         try {
-            JSONArray jsonArray = new JSONArray(response);
+            jsonArray = new JSONArray(response);
             //Set recyclerview adapter
-            LibraryCategoriesRecyclerViewAdapter adapter = new LibraryCategoriesRecyclerViewAdapter(getContext(), jsonArray);
+            LibraryCategoriesRecyclerViewAdapter adapter = new LibraryCategoriesRecyclerViewAdapter(getContext(), jsonArray, clickListener);
             categoriesRecyclerView.setAdapter(adapter);
             //Set recyclerview layout manager
             categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -72,38 +92,5 @@ public class LibraryFragment extends Fragment {
         }
 
         return view;
-    }
-
-    public String LoadData(String inFile) {
-        String tContents = "";
-
-        try {
-            InputStream stream = getActivity().getAssets().open(inFile);
-            int size = stream.available();
-            byte[] buffer = new byte[size];
-            stream.read(buffer);
-            stream.close();
-            tContents = new String(buffer);
-        } catch (IOException e) {
-        }
-
-        return tContents;
-
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 }

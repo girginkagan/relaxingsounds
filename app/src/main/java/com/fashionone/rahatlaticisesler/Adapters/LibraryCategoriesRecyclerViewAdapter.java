@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fashionone.rahatlaticisesler.Interfaces.OnLibraryCategoryItemClick;
 import com.fashionone.rahatlaticisesler.Models.LibraryCategoryModel;
 import com.fashionone.rahatlaticisesler.R;
 import com.squareup.picasso.Picasso;
@@ -19,7 +20,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class LibraryCategoriesRecyclerViewAdapter extends RecyclerView.Adapter<LibraryCategoriesRecyclerViewAdapter.ItemViewHolder> {
-    //private PeopleItemClickListener listener;
+    private OnLibraryCategoryItemClick listener;
     private Context context;
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView title;
@@ -33,8 +34,9 @@ public class LibraryCategoriesRecyclerViewAdapter extends RecyclerView.Adapter<L
 
     private ArrayList<LibraryCategoryModel> contentItems = new ArrayList<>();
 
-    public LibraryCategoriesRecyclerViewAdapter(Context context, JSONArray xy){
+    public LibraryCategoriesRecyclerViewAdapter(Context context, JSONArray xy, OnLibraryCategoryItemClick listener){
         this.context = context;
+        this.listener = listener;
         try {
             for (int i = 0; i < xy.length(); i++) {
                 LibraryCategoryModel x = new LibraryCategoryModel(xy.getJSONObject(i).getString("id"), xy.getJSONObject(i).getString("title"), xy.getJSONObject(i).getString("bgImage"));
@@ -42,7 +44,6 @@ public class LibraryCategoriesRecyclerViewAdapter extends RecyclerView.Adapter<L
             }
         } catch (JSONException e) {
         }
-        //this.listener = listener;
     }
 
     @Override
@@ -57,7 +58,11 @@ public class LibraryCategoriesRecyclerViewAdapter extends RecyclerView.Adapter<L
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //listener.onItemClick(v, pvh.getPosition());
+                try {
+                    listener.onItemClick(v, pvh.getPosition());
+                } catch (JSONException e) {
+
+                }
             }
         });
         return pvh;
