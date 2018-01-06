@@ -28,5 +28,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:26.+'
     compile 'net.steamcrafted:materialiconlib:1.1.4'
+    compile 'com.android.support:recyclerview-v7:+'
+    compile 'com.squareup.picasso:picasso:2.3.3'
+    compile 'com.android.volley:volley:1.1.0'
     testCompile 'junit:junit:4.12'
 }

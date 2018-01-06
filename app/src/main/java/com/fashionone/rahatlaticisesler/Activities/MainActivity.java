@@ -30,17 +30,18 @@ public class MainActivity extends AppCompatActivity {
         favoritesRadioBtn = (RadioButton) findViewById(R.id.favsRadioBtn);
         libraryRadioBtn = (RadioButton) findViewById(R.id.libRadioBtn);
 
+        //drawables for tab radio buttons
         Drawable drawableFavorites = MaterialDrawableBuilder.with(MainActivity.this)
                 .setIcon(MaterialDrawableBuilder.IconValue.HEART)
                 .setColor(getResources().getColor(R.color.colorWhite))
                 .setToActionbarSize()
-                .setSizeDp(20)
+                .setSizeDp(18)
                 .build();
         Drawable drawableLibrary = MaterialDrawableBuilder.with(MainActivity.this)
                 .setIcon(MaterialDrawableBuilder.IconValue.HAMBURGER)
                 .setColor(getResources().getColor(R.color.colorWhite))
                 .setToActionbarSize()
-                .setSizeDp(20)
+                .setSizeDp(18)
                 .build();
 
 
