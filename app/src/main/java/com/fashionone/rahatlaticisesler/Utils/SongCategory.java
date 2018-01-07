@@ -1,4 +1,4 @@
-package com.fashionone.rahatlaticisesler;
+package com.fashionone.rahatlaticisesler.Utils;
 
 import android.app.Activity;
 
@@ -34,10 +34,10 @@ public class SongCategory {
                     stream = activity.getAssets().open("library_birds.html");
                     break;
                 case "2":
-                    stream = activity.getAssets().open("library_birds.html");
+                    stream = activity.getAssets().open("library_piano_sounds.html");
                     break;
                 case "3":
-                    stream = activity.getAssets().open("library_birds.html");
+                    stream = activity.getAssets().open("library_nature_sounds.html");
                     break;
             }
             int size = stream.available();

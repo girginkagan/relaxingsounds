@@ -34,7 +34,7 @@
         android:layout_marginEnd="20dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/leftLayout">
+        android:layout_toEndOf="@+id/leftLayout">
         <ToggleButton
             android:id="@+id/playPauseBtn"
             android:layout_width="30dp"

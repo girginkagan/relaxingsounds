@@ -4,26 +4,31 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fashionone.rahatlaticisesler.Activities.MainActivity;
+import com.fashionone.rahatlaticisesler.Adapters.FavoritesRecyclerViewAdapter;
+import com.fashionone.rahatlaticisesler.Adapters.LibraryCategorySelectedRecyclerViewAdapter;
 import com.fashionone.rahatlaticisesler.R;
+import com.fashionone.rahatlaticisesler.Utils.FavoritesUtil;
+import com.fashionone.rahatlaticisesler.Utils.SongCategory;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 public class FavoritesFragment extends Fragment {
-
-    private OnFragmentInteractionListener mListener;
-
-    public FavoritesFragment() {
-
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    RecyclerView recyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,23 +37,15 @@ public class FavoritesFragment extends Fragment {
         MainActivity activity = (MainActivity)getActivity();
         activity.changeToolbarTitle("Favorilerim");
 
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+
+        //Set recyclerview adapter
+        FavoritesRecyclerViewAdapter adapter = new FavoritesRecyclerViewAdapter(getActivity(), getContext(), FavoritesUtil.favoritesArray, recyclerView);
+        recyclerView.setAdapter(adapter);
+        //Set recyclerview layout manager
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setHasFixedSize(true);
+
         return view;
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-
-        void onFragmentInteraction(Uri uri);
     }
 }

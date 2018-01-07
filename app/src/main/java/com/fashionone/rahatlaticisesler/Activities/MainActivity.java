@@ -55,9 +55,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    getSupportFragmentManager().popBackStackImmediate(null, 0);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.rootFrame, new FavoritesFragment());
                     fragmentTransaction.commit();
+                    getSupportFragmentManager().popBackStackImmediate(null, 0);
                 }
             }
         });
@@ -65,16 +67,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    getSupportFragmentManager().popBackStackImmediate(null, 0);
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.rootFrame, new LibraryFragment());
                     fragmentTransaction.commit();
+                    getSupportFragmentManager().popBackStackImmediate(null, 0);
                 }
             }
         });
 
-        //Load library as the first page
+        //Load favorites as the first page
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.rootFrame, new LibraryFragment());
+        fragmentTransaction.add(R.id.rootFrame, new FavoritesFragment());
         fragmentTransaction.commit();
     }
 

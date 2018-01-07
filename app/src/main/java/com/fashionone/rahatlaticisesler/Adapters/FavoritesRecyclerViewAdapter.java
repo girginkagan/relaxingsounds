@@ -14,7 +14,6 @@ import android.widget.ToggleButton;
 import com.fashionone.rahatlaticisesler.Models.LibrarySongModel;
 import com.fashionone.rahatlaticisesler.R;
 import com.fashionone.rahatlaticisesler.Utils.FavoritesUtil;
-import com.fashionone.rahatlaticisesler.Utils.SongCategory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,10 +26,11 @@ import static com.fashionone.rahatlaticisesler.Utils.PlayerFactory.pauseSong;
 import static com.fashionone.rahatlaticisesler.Utils.PlayerFactory.playSong;
 import static com.fashionone.rahatlaticisesler.Utils.PlayerFactory.setVolume;
 
-public class LibraryCategorySelectedRecyclerViewAdapter extends RecyclerView.Adapter<LibraryCategorySelectedRecyclerViewAdapter.ItemViewHolder> {
+public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<FavoritesRecyclerViewAdapter.ItemViewHolder> {
     private Context context;
     private Activity activity;
     private JSONArray jsonArray;
+    private RecyclerView recyclerView;
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ToggleButton playPauseBtn;
@@ -47,9 +47,10 @@ public class LibraryCategorySelectedRecyclerViewAdapter extends RecyclerView.Ada
 
     private ArrayList<LibrarySongModel> contentItems = new ArrayList<>();
 
-    public LibraryCategorySelectedRecyclerViewAdapter(Activity activity, Context context, JSONArray xy){
+    public FavoritesRecyclerViewAdapter(Activity activity, Context context, JSONArray xy, RecyclerView recyclerView){
         this.context = context;
         this.activity = activity;
+        this.recyclerView = recyclerView;
         jsonArray = xy;
         try {
             for (int i = 0; i < xy.length(); i++) {
@@ -76,8 +77,8 @@ public class LibraryCategorySelectedRecyclerViewAdapter extends RecyclerView.Ada
     public void onBindViewHolder(final ItemViewHolder itemViewHolder, final int i) {
         itemViewHolder.title.setText(contentItems.get(i).title);
         itemViewHolder.playPauseBtn.setChecked(checkIfSongPlaying(contentItems.get(i).song));
-        itemViewHolder.favBtn.setChecked(FavoritesUtil.checkIfSongFavorited(contentItems.get(i).song));
         itemViewHolder.volumeSeekBar.setProgress(getMediaPlayerVolume(contentItems.get(i).song));
+        itemViewHolder.favBtn.setChecked(FavoritesUtil.checkIfSongFavorited(contentItems.get(i).song));
         itemViewHolder.volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -117,6 +118,7 @@ public class LibraryCategorySelectedRecyclerViewAdapter extends RecyclerView.Ada
                     }
                     FavoritesUtil.SaveFavorites(activity, FavoritesUtil.favoritesArray.toString());
                 }
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
         itemViewHolder.playPauseBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

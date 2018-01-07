@@ -1,7 +1,5 @@
 package com.fashionone.rahatlaticisesler.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,10 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fashionone.rahatlaticisesler.Adapters.LibraryCategoriesRecyclerViewAdapter;
 import com.fashionone.rahatlaticisesler.Adapters.LibraryCategorySelectedRecyclerViewAdapter;
 import com.fashionone.rahatlaticisesler.R;
-import com.fashionone.rahatlaticisesler.SongCategory;
+import com.fashionone.rahatlaticisesler.Utils.SongCategory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +38,7 @@ public class LibraryCategorySelectedFragment extends Fragment {
             Log.i("x", response);
             jsonArray = new JSONArray(response);
             //Set recyclerview adapter
-            LibraryCategorySelectedRecyclerViewAdapter adapter = new LibraryCategorySelectedRecyclerViewAdapter(getContext(), jsonArray);
+            LibraryCategorySelectedRecyclerViewAdapter adapter = new LibraryCategorySelectedRecyclerViewAdapter(getActivity(), getContext(), jsonArray);
             recyclerView.setAdapter(adapter);
             //Set recyclerview layout manager
             recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));

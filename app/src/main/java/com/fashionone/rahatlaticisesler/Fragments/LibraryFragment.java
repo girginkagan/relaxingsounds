@@ -1,14 +1,11 @@
 package com.fashionone.rahatlaticisesler.Fragments;
 
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +14,14 @@ import com.fashionone.rahatlaticisesler.Activities.MainActivity;
 import com.fashionone.rahatlaticisesler.Adapters.LibraryCategoriesRecyclerViewAdapter;
 import com.fashionone.rahatlaticisesler.Interfaces.OnLibraryCategoryItemClick;
 import com.fashionone.rahatlaticisesler.R;
-import com.fashionone.rahatlaticisesler.SongCategory;
+import com.fashionone.rahatlaticisesler.Utils.SongCategory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 public class LibraryFragment extends Fragment {
 
     FragmentTransaction fragmentTransaction;
-    public LibraryFragment() {
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
