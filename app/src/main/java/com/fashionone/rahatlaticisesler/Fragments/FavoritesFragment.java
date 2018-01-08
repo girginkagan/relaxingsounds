@@ -40,7 +40,7 @@ public class FavoritesFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         //Set recyclerview adapter
-        FavoritesRecyclerViewAdapter adapter = new FavoritesRecyclerViewAdapter(getActivity(), getContext(), FavoritesUtil.favoritesArray, recyclerView);
+        FavoritesRecyclerViewAdapter adapter = new FavoritesRecyclerViewAdapter(getActivity(), getContext(), FavoritesUtil.favoritesArray);
         recyclerView.setAdapter(adapter);
         //Set recyclerview layout manager
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));

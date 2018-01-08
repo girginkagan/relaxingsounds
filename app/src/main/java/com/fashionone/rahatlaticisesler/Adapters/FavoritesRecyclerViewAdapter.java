@@ -30,7 +30,6 @@ public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<Favorites
     private Context context;
     private Activity activity;
     private JSONArray jsonArray;
-    private RecyclerView recyclerView;
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         ToggleButton playPauseBtn;
@@ -47,10 +46,9 @@ public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<Favorites
 
     private ArrayList<LibrarySongModel> contentItems = new ArrayList<>();
 
-    public FavoritesRecyclerViewAdapter(Activity activity, Context context, JSONArray xy, RecyclerView recyclerView){
+    public FavoritesRecyclerViewAdapter(Activity activity, Context context, JSONArray xy){
         this.context = context;
         this.activity = activity;
-        this.recyclerView = recyclerView;
         jsonArray = xy;
         try {
             for (int i = 0; i < xy.length(); i++) {
@@ -74,7 +72,7 @@ public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<Favorites
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder itemViewHolder, final int i) {
+    public void onBindViewHolder(final ItemViewHolder itemViewHolder, int i) {
         itemViewHolder.title.setText(contentItems.get(i).title);
         itemViewHolder.playPauseBtn.setChecked(checkIfSongPlaying(contentItems.get(i).song));
         itemViewHolder.volumeSeekBar.setProgress(getMediaPlayerVolume(contentItems.get(i).song));
@@ -82,7 +80,7 @@ public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<Favorites
         itemViewHolder.volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                setVolume(((float)progress / 100), contentItems.get(i).song);
+                setVolume(((float)progress / 100), contentItems.get(itemViewHolder.getAdapterPosition()).song);
             }
 
             @Override
@@ -100,7 +98,7 @@ public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<Favorites
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     try {
-                        FavoritesUtil.favoritesArray.put(jsonArray.getJSONObject(i));
+                        FavoritesUtil.favoritesArray.put(jsonArray.getJSONObject(itemViewHolder.getAdapterPosition()));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -118,7 +116,6 @@ public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<Favorites
                     }
                     FavoritesUtil.SaveFavorites(activity, FavoritesUtil.favoritesArray.toString());
                 }
-                recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
         itemViewHolder.playPauseBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -126,10 +123,10 @@ public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<Favorites
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(isChecked){
-                    playSong(itemViewHolder.itemView.getContext(), contentItems.get(i).song, ((float)itemViewHolder.volumeSeekBar.getProgress() / 100));
+                    playSong(itemViewHolder.itemView.getContext(), contentItems.get(itemViewHolder.getAdapterPosition()).song, ((float)itemViewHolder.volumeSeekBar.getProgress() / 100));
                 }
                 else{
-                    pauseSong(contentItems.get(i).song);
+                    pauseSong(contentItems.get(itemViewHolder.getAdapterPosition()).song);
                 }
             }
         });
